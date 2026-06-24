@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>포어링커피 — 매주, 당신의 취향에 맞춰 내리는 한 잔</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-base: #1B130F;
+    --bg-card: #2A1F17;
+    --bg-card-hover: #332519;
+    --cream: #EDE2CC;
+    --cream-dim: #B8A98F;
+    --rust: #C97A3A;
+    --rust-bright: #E0934E;
+    --wood: #8B5A2B;
+    --sage: #6F7D5C;
+    --line: rgba(237,226,204,0.12);
+    --line-bright: rgba(237,226,204,0.22);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--bg-base);
+    color: var(--cream);
+    font-family: 'Inter', sans-serif;
+    overflow-x:hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif{font-family:'Fraunces', serif;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+
+  /* texture overlay */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image: radial-gradient(circle at 20% 20%, rgba(201,122,58,0.07), transparent 45%),
+                       radial-gradient(circle at 85% 70%, rgba(111,125,92,0.05), transparent 50%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  /* ===== NAV ===== */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 32px;
+    background: linear-gradient(to bottom, rgba(27,19,15,0.92), rgba(27,19,15,0));
+    backdrop-filter: blur(6px);
+  }
+  .logo{
+    font-family:'Fraunces', serif; font-weight:600; font-size:20px;
+    letter-spacing:0.01em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo-dot{width:7px;height:7px;border-radius:50%;background:var(--rust-bright);}
+  .nav-links{display:flex; gap:36px; font-size:14px; color:var(--cream-dim);}
+  .nav-links a{transition:color .2s;}
+  .nav-links a:hover{color:var(--cream);}
+  .nav-cta{
+    border:1px solid var(--line-bright); padding:9px 20px; border-radius:100px;
+    font-size:13.5px; transition: all .25s;
+  }
+  .nav-cta:hover{background:var(--rust); border-color:var(--rust); color:#1B130F;}
+  @media (max-width: 760px){ .nav-links{display:none;} }
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding-top:120px; padding-bottom:80px;
+    z-index:1;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns: 1.1fr 0.9fr; gap:64px; align-items:center;
+  }
+  @media (max-width: 900px){ .hero-grid{grid-template-columns:1fr;} }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'JetBrains Mono', monospace; font-size:12.5px; letter-spacing:0.06em;
+    color: var(--rust-bright); text-transform:uppercase;
+    margin-bottom:28px;
+  }
+  .eyebrow::before{
+    content:""; width:18px; height:1px; background:var(--rust-bright);
+  }
+  h1.hero-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(40px, 6vw, 72px);
+    line-height:1.05;
+    letter-spacing:-0.01em;
+    color:var(--cream);
+    margin-bottom:28px;
+  }
+  h1.hero-title em{
+    font-style:italic; font-weight:500; color:var(--rust-bright);
+  }
+  .hero-sub{
+    font-size:17px; line-height:1.7; color:var(--cream-dim);
+    max-width:460px; margin-bottom:40px;
+  }
+  .hero-actions{display:flex; gap:14px; align-items:center; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--rust); color:#1B130F; font-weight:600; font-size:15px;
+    padding:15px 30px; border-radius:100px;
+    transition: all .25s; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary:hover{background:var(--rust-bright); transform:translateY(-1px);}
+  .btn-ghost{
+    color:var(--cream); font-size:15px; padding:15px 6px;
+    border-bottom:1px solid var(--line-bright);
+    transition: border-color .25s;
+  }
+  .btn-ghost:hover{border-color:var(--rust-bright); color:var(--rust-bright);}
+
+  /* drip visual */
+  .drip-visual{
+    position:relative; height:460px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .drip-visual svg{ width:100%; height:100%; max-width:340px; }
+  .drop{ animation: fall 2.6s cubic-bezier(.55,0,.85,.35) infinite; }
+  .drop2{ animation-delay: 1.3s; }
+  @keyframes fall{
+    0%{ transform: translateY(0); opacity:0; }
+    8%{ opacity:1; }
+    62%{ transform: translateY(125px); opacity:1; }
+    70%{ transform: translateY(132px); opacity:0; }
+    100%{ transform: translateY(132px); opacity:0; }
+  }
+  .ripple{ animation: ripple 2.6s cubic-bezier(.2,.6,.3,1) infinite; transform-origin:center; }
+  .ripple2{ animation-delay:1.3s; }
+  @keyframes ripple{
+    0%, 60%{ opacity:0; transform:scale(0.3); }
+    66%{ opacity:0.6; }
+    85%{ opacity:0; transform:scale(1.6); }
+    100%{ opacity:0; transform:scale(1.6); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .drop, .drop2, .ripple, .ripple2 { animation: none !important; }
+  }
+
+  .stat-row{
+    display:flex; gap:40px; margin-top:56px; padding-top:32px; border-top:1px solid var(--line);
+  }
+  .stat-num{font-family:'Fraunces', serif; font-size:30px; font-weight:600; color:var(--cream); display:block;}
+  .stat-label{font-size:12.5px; color:var(--cream-dim); margin-top:4px;}
+
+  /* ===== SECTION SHARED ===== */
+  section{position:relative; z-index:1; padding:120px 0;}
+  .section-head{ max-width:600px; margin-bottom:64px; }
+  .section-eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.08em;
+    color:var(--wood); text-transform:uppercase; margin-bottom:16px; display:block;
+  }
+  h2.section-title{
+    font-family:'Fraunces', serif; font-weight:600; font-size:clamp(28px,3.6vw,42px);
+    line-height:1.15; color:var(--cream);
+  }
+  .section-desc{ color:var(--cream-dim); font-size:15.5px; line-height:1.7; margin-top:18px; }
+
+  /* ===== FLOW (취향설문 -> 원두선택 -> 구독) ===== */
+  .flow{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:1px;
+    background: var(--line); border-radius:20px; overflow:hidden;
+    border:1px solid var(--line);
+  }
+  @media (max-width: 860px){ .flow{grid-template-columns:1fr;} }
+  .flow-step{
+    background: var(--bg-card); padding:40px 36px; position:relative;
+    transition: background .3s;
+  }
+  .flow-step:hover{ background: var(--bg-card-hover); }
+  .flow-index{
+    font-family:'JetBrains Mono', monospace; color:var(--rust-bright); font-size:13px; margin-bottom:24px; display:block;
+  }
+  .flow-step h3{
+    font-family:'Fraunces', serif; font-size:22px; font-weight:600; margin-bottom:12px;
+  }
+  .flow-step p{ color:var(--cream-dim); font-size:14.5px; line-height:1.65; }
+  .flow-arrow{
+    position:absolute; right:-1px; top:50%; transform:translateY(-50%);
+    width:24px; height:24px; border-radius:50%; background:var(--bg-base);
+    border:1px solid var(--line-bright); display:flex; align-items:center; justify-content:center;
+    font-size:12px; color:var(--rust-bright); z-index:2;
+  }
+  @media (max-width: 860px){ .flow-arrow{display:none;} }
+
+  /* ===== PLANS ===== */
+  .plans{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  @media (max-width:900px){ .plans{grid-template-columns:1fr;} }
+  .plan-card{
+    background: var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:40px 32px;
+    display:flex; flex-direction:column;
+    transition: transform .3s, border-color .3s;
+  }
+  .plan-card:hover{ transform:translateY(-4px); border-color:var(--line-bright); }
+  .plan-card.featured{
+    border-color: var(--rust);
+    background: linear-gradient(160deg, var(--bg-card-hover), var(--bg-card));
+    position:relative;
+  }
+  .plan-badge{
+    position:absolute; top:-13px; left:32px;
+    background:var(--rust); color:#1B130F; font-size:11.5px; font-weight:600;
+    padding:5px 14px; border-radius:100px; letter-spacing:0.02em;
+  }
+  .plan-name{ font-size:14px; color:var(--cream-dim); margin-bottom:8px; }
+  .plan-weight{ font-family:'Fraunces', serif; font-size:30px; font-weight:600; margin-bottom:4px; }
+  .plan-cycle{ font-size:13.5px; color:var(--wood); margin-bottom:28px; }
+  .plan-price{ font-family:'Fraunces', serif; font-size:26px; font-weight:600; margin-bottom:28px; white-space:nowrap; }
+  .plan-price span{ font-family:'Inter'; font-size:14px; color:var(--cream-dim); font-weight:400; }
+  .plan-features{ list-style:none; display:flex; flex-direction:column; gap:13px; margin-bottom:32px; flex:1; }
+  .plan-features li{ font-size:14px; color:var(--cream-dim); display:flex; gap:10px; align-items:flex-start; }
+  .plan-features li::before{ content:"—"; color:var(--rust-bright); flex-shrink:0; }
+  .plan-cta{
+    text-align:center; padding:13px; border-radius:100px; font-size:14.5px; font-weight:600;
+    border:1px solid var(--line-bright); transition: all .25s;
+  }
+  .plan-cta:hover{ background:var(--cream); color:var(--bg-base); border-color:var(--cream); }
+  .plan-card.featured .plan-cta{ background:var(--rust); border-color:var(--rust); color:#1B130F; }
+  .plan-card.featured .plan-cta:hover{ background:var(--rust-bright); border-color:var(--rust-bright); }
+
+  /* ===== CURATION ===== */
+  .curation-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:18px; }
+  @media (max-width:900px){ .curation-grid{grid-template-columns:repeat(2,1fr);} }
+  .bean-card{
+    background:var(--bg-card); border:1px solid var(--line); border-radius:18px;
+    padding:26px 22px; transition: border-color .3s;
+  }
+  .bean-card:hover{ border-color: var(--line-bright); }
+  .bean-roast{
+    width:36px; height:36px; border-radius:50%; margin-bottom:18px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-family:'JetBrains Mono'; font-weight:500;
+  }
+  .bean-name{ font-family:'Fraunces', serif; font-size:18px; font-weight:600; margin-bottom:6px; }
+  .bean-origin{ font-size:13px; color:var(--cream-dim); margin-bottom:14px; }
+  .bean-notes{ display:flex; gap:6px; flex-wrap:wrap; }
+  .bean-notes span{
+    font-size:11.5px; padding:4px 10px; border-radius:100px; background:rgba(237,226,204,0.06);
+    color:var(--cream-dim); border:1px solid var(--line);
+  }
+
+  /* ===== TESTIMONIAL / TRUST ===== */
+  .trust{
+    display:grid; grid-template-columns: 1fr 1fr; gap:64px; align-items:center;
+  }
+  @media (max-width:900px){ .trust{grid-template-columns:1fr;} }
+  .quote{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:clamp(22px,2.6vw,30px); line-height:1.45; color:var(--cream);
+  }
+  .quote-author{ margin-top:24px; font-size:14px; color:var(--cream-dim); }
+  .quote-author b{ color:var(--cream); font-style:normal; font-weight:600; }
+  .trust-stats{ display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  .trust-stat-num{ font-family:'Fraunces', serif; font-size:40px; font-weight:600; color:var(--rust-bright); }
+  .trust-stat-label{ font-size:13.5px; color:var(--cream-dim); margin-top:6px; line-height:1.5; }
+
+  /* ===== CTA FOOTER ===== */
+  .cta-band{
+    background: linear-gradient(135deg, var(--bg-card), #241A13);
+    border-radius:28px; padding:80px 56px; text-align:center;
+    position:relative; overflow:hidden; border:1px solid var(--line);
+  }
+  .cta-band::after{
+    content:""; position:absolute; width:380px; height:380px; border-radius:50%;
+    background: radial-gradient(circle, rgba(201,122,58,0.18), transparent 70%);
+    top:-150px; right:-100px;
+  }
+  .cta-band h2{ font-family:'Fraunces', serif; font-size:clamp(28px,4vw,44px); font-weight:600; margin-bottom:20px; position:relative;}
+  .cta-band p{ color:var(--cream-dim); font-size:16px; margin-bottom:36px; position:relative;}
+
+  footer{
+    border-top:1px solid var(--line); padding:56px 0 40px;
+    display:flex; justify-content:space-between; align-items:flex-start; gap:40px;
+    font-size:13.5px; color:var(--cream-dim);
+  }
+  @media (max-width:700px){ footer{flex-direction:column; gap:28px;} }
+  .footer-cols{ display:flex; gap:64px; }
+  .footer-col h4{ color:var(--cream); font-size:13px; margin-bottom:14px; font-weight:600; }
+  .footer-col a{ display:block; margin-bottom:9px; color:var(--cream-dim); transition:color .2s; }
+  .footer-col a:hover{ color:var(--rust-bright); }
+
+  .reveal{ opacity:0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><span class="logo-dot"></span>포어링커피</div>
+  <div class="nav-links">
+    <a href="#flow">이용 방법</a>
+    <a href="#plans">구독 플랜</a>
+    <a href="#curation">원두 큐레이션</a>
+    <a href="#trust">후기</a>
+  </div>
+  <a href="#plans" class="nav-cta">구독 시작하기</a>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Weekly Pour-Over Subscription</span>
+      <h1 class="hero-title">매주, 당신의<br>취향에 맞춰<br><em>내리는</em> 한 잔</h1>
+      <p class="hero-sub">짧은 취향 설문 하나로 시작하는 원두 구독. 로스팅 날짜, 분쇄도, 배송 주기까지 — 핸드드립 한 잔을 위한 모든 디테일을 당신에 맞춰 조정합니다.</p>
+      <div class="hero-actions">
+        <a href="#plans" class="btn-primary">취향 설문 시작 →</a>
+        <a href="#flow" class="btn-ghost">어떻게 작동하나요</a>
+      </div>
+      <div class="stat-row">
+        <div><span class="stat-num">307<span style="color:var(--rust-bright)">명</span></span><span class="stat-label">이번 달 신규 구독자</span></div>
+        <div><span class="stat-num">64<span style="color:var(--rust-bright)">%</span></span><span class="stat-label">재구매율</span></div>
+        <div><span class="stat-num">12<span style="color:var(--rust-bright)">개</span></span><span class="stat-label">파트너 로스터리</span></div>
+      </div>
+    </div>
+    <div class="drip-visual" aria-hidden="true">
+      <svg viewBox="0 0 300 400" fill="none">
+        <!-- dripper -->
+        <path d="M95 40 L205 40 L172 118 L128 118 Z" fill="none" stroke="#8B5A2B" stroke-width="2.5"/>
+        <ellipse cx="150" cy="40" rx="55" ry="7" fill="none" stroke="#8B5A2B" stroke-width="2.5"/>
+        <!-- filter coffee mound -->
+        <path d="M122 47 Q150 32 178 47 Q164 62 150 62 Q136 62 122 47 Z" fill="#3A2A1C"/>
+        <!-- drops -->
+        <circle class="drop" cx="150" cy="122" r="4" fill="#C97A3A"/>
+        <circle class="drop drop2" cx="150" cy="122" r="4" fill="#C97A3A"/>
+        <!-- cup -->
+        <path d="M100 250 L200 250 L191 320 Q150 331 109 320 Z" fill="none" stroke="#8B5A2B" stroke-width="2.5"/>
+        <ellipse cx="150" cy="250" rx="50" ry="8" fill="#2A1F17" stroke="#8B5A2B" stroke-width="2"/>
+        <ellipse class="ripple" cx="150" cy="250" rx="18" ry="3.5" fill="none" stroke="#E0934E" stroke-width="1.5"/>
+        <ellipse class="ripple ripple2" cx="150" cy="250" rx="18" ry="3.5" fill="none" stroke="#E0934E" stroke-width="1.5"/>
+        <path d="M200 264 Q227 269 222 291 Q217 309 195 305" fill="none" stroke="#8B5A2B" stroke-width="2.5"/>
+        <!-- steam -->
+        <path d="M132 232 Q127 216 137 207 Q147 198 140 184" stroke="#B8A98F" stroke-width="1.5" fill="none" opacity="0.5"/>
+        <path d="M165 232 Q160 218 170 209 Q180 200 172 187" stroke="#B8A98F" stroke-width="1.5" fill="none" opacity="0.4"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section id="flow">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">How it works</span>
+      <h2 class="section-title">세 단계면, 첫 배송이 시작됩니다</h2>
+      <p class="section-desc">복잡한 가입 절차 없이, 취향을 묻고 원두를 고르고 주기를 정하면 끝입니다.</p>
+    </div>
+    <div class="flow reveal">
+      <div class="flow-step">
+        <span class="flow-index">01 · 취향 설문</span>
+        <h3>3분, 7가지 질문</h3>
+        <p>산미와 바디감, 평소 즐기는 추출 방식, 하루 섭취량을 묻습니다. 정답은 없습니다 — 당신의 입맛이 기준입니다.</p>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-index">02 · 원두 큐레이션</span>
+        <h3>설문 기반 추천</h3>
+        <p>응답을 바탕으로 원두 산지와 로스팅 포인트를 매칭하고, 분쇄도까지 직접 조정할 수 있습니다.</p>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-index">03 · 구독 플랜 설정</span>
+        <h3>주기·결제 한 번에</h3>
+        <p>2주 또는 한 달 배송 주기를 고르고 결제 수단을 등록하면, 그 이후로는 신경 쓸 일이 없습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="plans">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">Subscription Plans</span>
+      <h2 class="section-title">필요한 만큼, 필요한 만큼만</h2>
+      <p class="section-desc">언제든 일시정지하거나 해지할 수 있습니다. 약정은 없습니다.</p>
+    </div>
+    <div class="plans reveal">
+      <div class="plan-card">
+        <p class="plan-name">가볍게 시작하기</p>
+        <p class="plan-weight">200g</p>
+        <p class="plan-cycle">2주마다 배송</p>
+        <p class="plan-price">14,900원 <span>/ 회</span></p>
+        <ul class="plan-features">
+          <li>원두 1종 선택</li>
+          <li>분쇄도 자유 설정</li>
+          <li>로스팅 후 72시간 내 발송</li>
+        </ul>
+        <a href="#" class="plan-cta">이 플랜으로 시작</a>
+      </div>
+      <div class="plan-card featured">
+        <span class="plan-badge">가장 많이 선택</span>
+        <p class="plan-name">매일 한 잔</p>
+        <p class="plan-weight">400g</p>
+        <p class="plan-cycle">한 달마다 배송</p>
+        <p class="plan-price">26,900원 <span>/ 회</span></p>
+        <ul class="plan-features">
+          <li>원두 최대 2종 혼합 선택</li>
+          <li>분쇄도 자유 설정</li>
+          <li>로스팅 후 48시간 내 발송</li>
+          <li>다음 배송 원두 미리보기</li>
+        </ul>
+        <a href="#" class="plan-cta">이 플랜으로 시작</a>
+      </div>
+      <div class="plan-card">
+        <p class="plan-name">시즌 한정</p>
+        <p class="plan-weight">300g</p>
+        <p class="plan-cycle">분기 1회 한정 배송</p>
+        <p class="plan-price">32,900원 <span>/ 회</span></p>
+        <ul class="plan-features">
+          <li>계절 한정 산지 원두</li>
+          <li>로스터 노트 카드 동봉</li>
+          <li>재고 소진 시 다음 시즌 자동 대기</li>
+        </ul>
+        <a href="#" class="plan-cta">이 플랜으로 시작</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="curation">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-eyebrow">Bean Curation</span>
+      <h2 class="section-title">이번 주 추천 원두</h2>
+      <p class="section-desc">취향 설문 응답이 가장 많이 매칭된 네 가지 원두입니다.</p>
+    </div>
+    <div class="curation-grid reveal">
+      <div class="bean-card">
+        <div class="bean-roast" style="background:rgba(111,125,92,0.18); color:#9DAE89;">L</div>
+        <p class="bean-name">에티오피아 예가체프</p>
+        <p class="bean-origin">라이트 로스팅 · 워시드</p>
+        <div class="bean-notes"><span>자몽</span><span>꽃향</span><span>밝은 산미</span></div>
+      </div>
+      <div class="bean-card">
+        <div class="bean-roast" style="background:rgba(201,122,58,0.18); color:var(--rust-bright);">M</div>
+        <p class="bean-name">콜롬비아 후일라</p>
+        <p class="bean-origin">미디엄 로스팅 · 내추럴</p>
+        <div class="bean-notes"><span>체리</span><span>캐러멜</span><span>균형감</span></div>
+      </div>
+      <div class="bean-card">
+        <div class="bean-roast" style="background:rgba(139,90,43,0.25); color:var(--wood);">MD</div>
+        <p class="bean-name">과테말라 안티구아</p>
+        <p class="bean-origin">미디엄다크 · 워시드</p>
+        <div class="bean-notes"><span>다크초콜릿</span><span>고소함</span><span>묵직함</span></div>
+      </div>
+      <div class="bean-card">
+        <div class="bean-roast" style="background:rgba(60,42,28,0.6); color:#D8C4A8;">D</div>
+        <p class="bean-name">수마트라 만델링</p>
+        <p class="bean-origin">다크 로스팅 · 세미워시드</p>
+        <div class="bean-notes"><span>흙내</span><span>스모키</span><span>진한 바디</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="wrap trust reveal">
+    <div>
+      <p class="quote">"매주 다른 원두가 오는 게 아니라, 내 취향이 점점 더 정확해지는 느낌이에요. 분쇄도까지 맞춰주는 구독은 처음입니다."</p>
+      <p class="quote-author"><b>이서윤</b> · 6개월째 구독 중</p>
+    </div>
+    <div class="trust-stats">
+      <div><div class="trust-stat-num">91%</div><div class="trust-stat-label">3개월 차 재구독<br>목표 달성률</div></div>
+      <div><div class="trust-stat-num">4.8</div><div class="trust-stat-label">평균 원두 만족도<br>(5점 만점)</div></div>
+      <div><div class="trust-stat-num">48hr</div><div class="trust-stat-label">로스팅 후<br>평균 발송 시간</div></div>
+      <div><div class="trust-stat-num">5</div><div class="trust-stat-label">엄선한<br>파트너 로스터리</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <h2>다음 잔은,<br>당신의 취향대로</h2>
+      <p>3분짜리 설문으로 시작해서, 첫 배송까지 보통 5일이면 충분합니다.</p>
+      <a href="#plans" class="btn-primary">취향 설문 시작하기 →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div class="logo"><span class="logo-dot"></span>포어링커피</div>
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>서비스</h4>
+      <a href="#flow">이용 방법</a>
+      <a href="#plans">구독 플랜</a>
+      <a href="#curation">원두 큐레이션</a>
+    </div>
+    <div class="footer-col">
+      <h4>고객지원</h4>
+      <a href="#">FAQ</a>
+      <a href="#">1:1 문의</a>
+      <a href="#">배송 조회</a>
+    </div>
+    <div class="footer-col">
+      <h4>회사</h4>
+      <a href="#">소개</a>
+      <a href="#">파트너 로스터리</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
