@@ -3,524 +3,736 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>포어링커피 — 매주, 당신의 취향에 맞춰 내리는 한 잔</title>
+<title>NATUREGUARD | 네이처가드</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg-base: #1B130F;
-    --bg-card: #2A1F17;
-    --bg-card-hover: #332519;
-    --cream: #EDE2CC;
-    --cream-dim: #B8A98F;
-    --rust: #C97A3A;
-    --rust-bright: #E0934E;
-    --wood: #8B5A2B;
-    --sage: #6F7D5C;
-    --line: rgba(237,226,204,0.12);
-    --line-bright: rgba(237,226,204,0.22);
+    --cream:#FAF6EC;
+    --cream-soft:#F1EADA;
+    --forest:#2F4A3A;
+    --forest-deep:#22362A;
+    --sage:#6F9577;
+    --sage-line:#BFD3C2;
+    --sage-pale:#E2EBE0;
+    --sun:#E2A33D;
+    --sun-deep:#C8862A;
+    --sun-soft:#F3D9A6;
+    --ink:#20281F;
+    --ink-soft:#4B5A4E;
+    --white:#FFFFFF;
+    --shadow: 0 18px 40px -22px rgba(34,54,42,0.28);
+    --display: "Gowun Batang", serif;
+    --body: "Noto Sans KR", sans-serif;
   }
-  *{margin:0;padding:0;box-sizing:border-box;}
+
+  *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
-    background: var(--bg-base);
-    color: var(--cream);
-    font-family: 'Inter', sans-serif;
+    margin:0;
+    font-family:var(--body);
+    color:var(--ink);
+    background:var(--cream);
+    -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
-    -webkit-font-smoothing: antialiased;
   }
-  .serif{font-family:'Fraunces', serif;}
-  .mono{font-family:'JetBrains Mono', monospace;}
-
+  img,svg{display:block;max-width:100%;}
   a{color:inherit;text-decoration:none;}
-  img{display:block;max-width:100%;}
+  ul{margin:0;padding:0;list-style:none;}
+  h1,h2,h3{margin:0;font-family:var(--display);font-weight:700;color:var(--forest-deep);}
+  p{margin:0;}
+  button{font-family:var(--body);cursor:pointer;}
 
-  /* texture overlay */
-  body::before{
-    content:"";
-    position:fixed; inset:0;
-    background-image: radial-gradient(circle at 20% 20%, rgba(201,122,58,0.07), transparent 45%),
-                       radial-gradient(circle at 85% 70%, rgba(111,125,92,0.05), transparent 50%);
-    pointer-events:none;
-    z-index:0;
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
   }
 
-  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  /* ---------- focus ---------- */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--sun-deep);
+    outline-offset:3px;
+    border-radius:4px;
+  }
 
-  /* ===== NAV ===== */
-  nav{
-    position:fixed; top:0; left:0; right:0; z-index:50;
-    display:flex; align-items:center; justify-content:space-between;
-    padding:22px 32px;
-    background: linear-gradient(to bottom, rgba(27,19,15,0.92), rgba(27,19,15,0));
-    backdrop-filter: blur(6px);
+  /* ---------- header ---------- */
+  .site-header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    background:rgba(250,246,236,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid transparent;
+    transition:border-color .3s ease, box-shadow .3s ease;
+  }
+  .site-header.scrolled{
+    border-bottom-color:var(--sage-line);
+    box-shadow:0 12px 30px -24px rgba(34,54,42,0.4);
+  }
+  .header-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:78px;
   }
   .logo{
-    font-family:'Fraunces', serif; font-weight:600; font-size:20px;
-    letter-spacing:0.01em;
-    display:flex; align-items:center; gap:8px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-family:var(--display);
+    font-size:21px;
+    font-weight:700;
+    color:var(--forest-deep);
+    letter-spacing:0.3px;
   }
-  .logo-dot{width:7px;height:7px;border-radius:50%;background:var(--rust-bright);}
-  .nav-links{display:flex; gap:36px; font-size:14px; color:var(--cream-dim);}
-  .nav-links a{transition:color .2s;}
-  .nav-links a:hover{color:var(--cream);}
+  .logo .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--sun);
+    flex:none;
+  }
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:34px;
+  }
+  .nav-links a{
+    font-size:14.5px;
+    font-weight:500;
+    color:var(--ink-soft);
+    position:relative;
+    padding:6px 0;
+    transition:color .2s ease;
+    white-space:nowrap;
+  }
+  .nav-links a:hover{color:var(--forest-deep);}
+  .nav-links a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    width:0%; height:2px;
+    background:var(--sun);
+    transition:width .25s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
   .nav-cta{
-    border:1px solid var(--line-bright); padding:9px 20px; border-radius:100px;
-    font-size:13.5px; transition: all .25s;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--forest-deep);
+    color:var(--cream) !important;
+    padding:10px 20px;
+    border-radius:999px;
+    font-size:13.5px;
+    font-weight:600;
+    transition:background .2s ease, transform .2s ease;
   }
-  .nav-cta:hover{background:var(--rust); border-color:var(--rust); color:#1B130F;}
-  @media (max-width: 760px){ .nav-links{display:none;} }
+  .nav-cta:hover{background:var(--sun-deep);transform:translateY(-1px);}
+  .nav-right{display:flex;align-items:center;gap:26px;}
+  .burger{
+    display:none;
+    width:38px;height:38px;
+    border:1px solid var(--sage-line);
+    border-radius:10px;
+    background:var(--white);
+    align-items:center;
+    justify-content:center;
+  }
+  .burger span, .burger span::before, .burger span::after{
+    content:"";
+    display:block;
+    width:16px;height:2px;
+    background:var(--forest-deep);
+    position:relative;
+    transition:transform .25s ease, opacity .25s ease;
+  }
+  .burger span::before{position:absolute;top:-5px;}
+  .burger span::after{position:absolute;top:5px;}
+  .burger.open span{background:transparent;}
+  .burger.open span::before{transform:translateY(5px) rotate(45deg);}
+  .burger.open span::after{transform:translateY(-5px) rotate(-45deg);}
 
-  /* ===== HERO ===== */
+  /* ---------- mobile nav drawer ---------- */
+  .mobile-nav{
+    display:none;
+    flex-direction:column;
+    background:var(--cream);
+    border-top:1px solid var(--sage-line);
+    padding:18px 32px 26px;
+  }
+  .mobile-nav.open{display:flex;}
+  .mobile-nav a{
+    padding:13px 0;
+    font-size:16px;
+    font-weight:600;
+    color:var(--forest-deep);
+    border-bottom:1px solid var(--sage-pale);
+  }
+  .mobile-nav .nav-cta{
+    margin-top:16px;
+    justify-content:center;
+  }
+
+  /* ---------- hero ---------- */
   .hero{
     position:relative;
-    min-height:100vh;
-    display:flex; flex-direction:column; justify-content:center;
-    padding-top:120px; padding-bottom:80px;
-    z-index:1;
+    padding:158px 0 110px;
+    overflow:hidden;
   }
-  .hero-grid{
-    display:grid; grid-template-columns: 1.1fr 0.9fr; gap:64px; align-items:center;
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:50px;
+    align-items:center;
   }
-  @media (max-width: 900px){ .hero-grid{grid-template-columns:1fr;} }
-
   .eyebrow{
-    display:inline-flex; align-items:center; gap:10px;
-    font-family:'JetBrains Mono', monospace; font-size:12.5px; letter-spacing:0.06em;
-    color: var(--rust-bright); text-transform:uppercase;
-    margin-bottom:28px;
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:1.6px;
+    color:var(--sun-deep);
+    margin-bottom:18px;
   }
   .eyebrow::before{
-    content:""; width:18px; height:1px; background:var(--rust-bright);
+    content:"";
+    width:18px;height:1.5px;
+    background:var(--sun-deep);
   }
-  h1.hero-title{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:clamp(40px, 6vw, 72px);
-    line-height:1.05;
-    letter-spacing:-0.01em;
-    color:var(--cream);
-    margin-bottom:28px;
-  }
-  h1.hero-title em{
-    font-style:italic; font-weight:500; color:var(--rust-bright);
+  .hero h1{
+    font-size:clamp(34px, 4.6vw, 54px);
+    line-height:1.32;
+    letter-spacing:-0.5px;
   }
   .hero-sub{
-    font-size:17px; line-height:1.7; color:var(--cream-dim);
-    max-width:460px; margin-bottom:40px;
+    margin-top:22px;
+    font-size:16.5px;
+    line-height:1.75;
+    color:var(--ink-soft);
+    max-width:480px;
   }
-  .hero-actions{display:flex; gap:14px; align-items:center; flex-wrap:wrap;}
+  .hero-ctas{
+    display:flex;
+    gap:14px;
+    margin-top:34px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 26px;
+    border-radius:999px;
+    font-size:15px;
+    font-weight:700;
+    border:1.5px solid transparent;
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+  }
   .btn-primary{
-    background:var(--rust); color:#1B130F; font-weight:600; font-size:15px;
-    padding:15px 30px; border-radius:100px;
-    transition: all .25s; display:inline-flex; align-items:center; gap:8px;
+    background:var(--forest-deep);
+    color:var(--cream);
   }
-  .btn-primary:hover{background:var(--rust-bright); transform:translateY(-1px);}
+  .btn-primary:hover{background:var(--sun-deep);transform:translateY(-2px);box-shadow:var(--shadow);}
   .btn-ghost{
-    color:var(--cream); font-size:15px; padding:15px 6px;
-    border-bottom:1px solid var(--line-bright);
-    transition: border-color .25s;
+    border-color:var(--forest-deep);
+    color:var(--forest-deep);
+    background:transparent;
   }
-  .btn-ghost:hover{border-color:var(--rust-bright); color:var(--rust-bright);}
+  .btn-ghost:hover{background:var(--forest-deep);color:var(--cream);transform:translateY(-2px);}
 
-  /* drip visual */
-  .drip-visual{
-    position:relative; height:460px;
-    display:flex; align-items:center; justify-content:center;
+  .hero-facts{
+    display:flex;
+    gap:28px;
+    margin-top:46px;
+    flex-wrap:wrap;
   }
-  .drip-visual svg{ width:100%; height:100%; max-width:340px; }
-  .drop{ animation: fall 2.6s cubic-bezier(.55,0,.85,.35) infinite; }
-  .drop2{ animation-delay: 1.3s; }
-  @keyframes fall{
-    0%{ transform: translateY(0); opacity:0; }
-    8%{ opacity:1; }
-    62%{ transform: translateY(125px); opacity:1; }
-    70%{ transform: translateY(132px); opacity:0; }
-    100%{ transform: translateY(132px); opacity:0; }
+  .hero-facts div{font-size:13px;color:var(--ink-soft);}
+  .hero-facts strong{
+    display:block;
+    font-family:var(--display);
+    font-size:21px;
+    color:var(--forest-deep);
+    margin-bottom:3px;
   }
-  .ripple{ animation: ripple 2.6s cubic-bezier(.2,.6,.3,1) infinite; transform-origin:center; }
-  .ripple2{ animation-delay:1.3s; }
-  @keyframes ripple{
-    0%, 60%{ opacity:0; transform:scale(0.3); }
-    66%{ opacity:0.6; }
-    85%{ opacity:0; transform:scale(1.6); }
-    100%{ opacity:0; transform:scale(1.6); }
+
+  .hero-art{
+    position:relative;
+    width:100%;
+    aspect-ratio:1/1;
+  }
+  .guard-illustration{width:100%;height:100%;}
+  .sun-rays{
+    transform-origin:305px 140px;
+    animation:sun-spin 50s linear infinite;
+  }
+  @keyframes sun-spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+  }
+
+  /* ---------- sections ---------- */
+  section.block{
+    position:relative;
+    padding:104px 0;
+  }
+  .block.alt{background:var(--cream-soft);}
+  .block-head{
+    max-width:620px;
+    margin-bottom:54px;
+  }
+  .block-head h2{
+    font-size:clamp(28px,3.2vw,38px);
+    line-height:1.3;
+    margin-top:14px;
+  }
+  .block-lead{
+    margin-top:16px;
+    font-size:16px;
+    color:var(--ink-soft);
+    line-height:1.7;
+  }
+
+  .card-grid{
+    display:grid;
+    gap:24px;
+  }
+  .card-grid.cols-2{grid-template-columns:repeat(2,1fr);}
+  .card-grid.cols-3{grid-template-columns:repeat(3,1fr);}
+
+  .card{
+    background:var(--white);
+    border:1px solid var(--sage-line);
+    border-radius:20px;
+    padding:32px 28px;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .card:hover{
+    transform:translateY(-5px);
+    box-shadow:var(--shadow);
+    border-color:var(--sun-soft);
+  }
+  .card-icon{
+    width:50px;height:50px;
+    border-radius:14px;
+    background:var(--sage-pale);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:20px;
+  }
+  .card h3{
+    font-family:var(--body);
+    font-size:18px;
+    font-weight:700;
+    color:var(--forest-deep);
+  }
+  .card .tag{
+    display:inline-block;
+    font-size:11.5px;
+    font-weight:700;
+    color:var(--sage);
+    background:var(--sage-pale);
+    padding:3px 10px;
+    border-radius:999px;
+    margin-bottom:12px;
+  }
+  .card p{
+    margin-top:10px;
+    font-size:14.5px;
+    line-height:1.65;
+    color:var(--ink-soft);
+  }
+
+  /* reveal on scroll */
+  .reveal{
+    opacity:0;
+    transform:translateY(22px);
+    transition:opacity .7s ease, transform .7s ease;
+  }
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------- divider arc between sections ---------- */
+  .divider{
+    display:flex;
+    justify-content:center;
+    margin:0;
+    line-height:0;
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    background:var(--forest-deep);
+    color:var(--cream);
+    padding:76px 0 0;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1fr;
+    gap:50px;
+    padding-bottom:56px;
+    border-bottom:1px solid rgba(250,246,236,0.14);
+  }
+  .footer-brand .logo{color:var(--cream);}
+  .footer-tagline{
+    margin-top:16px;
+    font-size:14.5px;
+    line-height:1.8;
+    color:rgba(250,246,236,0.72);
+    max-width:280px;
+  }
+  .footer-col h4{
+    font-family:var(--body);
+    font-size:13.5px;
+    font-weight:700;
+    letter-spacing:0.6px;
+    color:var(--sun-soft);
+    margin-bottom:18px;
+  }
+  .footer-col a, .footer-col p{
+    display:block;
+    font-size:14px;
+    color:rgba(250,246,236,0.78);
+    margin-bottom:12px;
+    line-height:1.6;
+  }
+  .footer-col a:hover{color:var(--cream);}
+  .footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:26px 0;
+    font-size:12.5px;
+    color:rgba(250,246,236,0.5);
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .hero .wrap{grid-template-columns:1fr;}
+    .hero-art{max-width:380px;margin:0 auto;}
+    .card-grid.cols-3{grid-template-columns:repeat(2,1fr);}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:768px){
+    .nav-links{display:none;}
+    .nav-right .nav-cta{display:none;}
+    .burger{display:flex;}
+    .wrap{padding:0 22px;}
+    .hero{padding:128px 0 80px;}
+    .card-grid.cols-2, .card-grid.cols-3{grid-template-columns:1fr;}
+    section.block{padding:76px 0;}
+    .footer-grid{grid-template-columns:1fr;gap:36px;padding-bottom:36px;}
   }
   @media (prefers-reduced-motion: reduce){
-    .drop, .drop2, .ripple, .ripple2 { animation: none !important; }
+    *{transition:none !important; animation:none !important;}
+    html{scroll-behavior:auto;}
   }
-
-  .stat-row{
-    display:flex; gap:40px; margin-top:56px; padding-top:32px; border-top:1px solid var(--line);
-  }
-  .stat-num{font-family:'Fraunces', serif; font-size:30px; font-weight:600; color:var(--cream); display:block;}
-  .stat-label{font-size:12.5px; color:var(--cream-dim); margin-top:4px;}
-
-  /* ===== SECTION SHARED ===== */
-  section{position:relative; z-index:1; padding:120px 0;}
-  .section-head{ max-width:600px; margin-bottom:64px; }
-  .section-eyebrow{
-    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.08em;
-    color:var(--wood); text-transform:uppercase; margin-bottom:16px; display:block;
-  }
-  h2.section-title{
-    font-family:'Fraunces', serif; font-weight:600; font-size:clamp(28px,3.6vw,42px);
-    line-height:1.15; color:var(--cream);
-  }
-  .section-desc{ color:var(--cream-dim); font-size:15.5px; line-height:1.7; margin-top:18px; }
-
-  /* ===== FLOW (취향설문 -> 원두선택 -> 구독) ===== */
-  .flow{
-    display:grid; grid-template-columns: repeat(3, 1fr); gap:1px;
-    background: var(--line); border-radius:20px; overflow:hidden;
-    border:1px solid var(--line);
-  }
-  @media (max-width: 860px){ .flow{grid-template-columns:1fr;} }
-  .flow-step{
-    background: var(--bg-card); padding:40px 36px; position:relative;
-    transition: background .3s;
-  }
-  .flow-step:hover{ background: var(--bg-card-hover); }
-  .flow-index{
-    font-family:'JetBrains Mono', monospace; color:var(--rust-bright); font-size:13px; margin-bottom:24px; display:block;
-  }
-  .flow-step h3{
-    font-family:'Fraunces', serif; font-size:22px; font-weight:600; margin-bottom:12px;
-  }
-  .flow-step p{ color:var(--cream-dim); font-size:14.5px; line-height:1.65; }
-  .flow-arrow{
-    position:absolute; right:-1px; top:50%; transform:translateY(-50%);
-    width:24px; height:24px; border-radius:50%; background:var(--bg-base);
-    border:1px solid var(--line-bright); display:flex; align-items:center; justify-content:center;
-    font-size:12px; color:var(--rust-bright); z-index:2;
-  }
-  @media (max-width: 860px){ .flow-arrow{display:none;} }
-
-  /* ===== PLANS ===== */
-  .plans{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
-  @media (max-width:900px){ .plans{grid-template-columns:1fr;} }
-  .plan-card{
-    background: var(--bg-card);
-    border:1px solid var(--line);
-    border-radius:20px;
-    padding:40px 32px;
-    display:flex; flex-direction:column;
-    transition: transform .3s, border-color .3s;
-  }
-  .plan-card:hover{ transform:translateY(-4px); border-color:var(--line-bright); }
-  .plan-card.featured{
-    border-color: var(--rust);
-    background: linear-gradient(160deg, var(--bg-card-hover), var(--bg-card));
-    position:relative;
-  }
-  .plan-badge{
-    position:absolute; top:-13px; left:32px;
-    background:var(--rust); color:#1B130F; font-size:11.5px; font-weight:600;
-    padding:5px 14px; border-radius:100px; letter-spacing:0.02em;
-  }
-  .plan-name{ font-size:14px; color:var(--cream-dim); margin-bottom:8px; }
-  .plan-weight{ font-family:'Fraunces', serif; font-size:30px; font-weight:600; margin-bottom:4px; }
-  .plan-cycle{ font-size:13.5px; color:var(--wood); margin-bottom:28px; }
-  .plan-price{ font-family:'Fraunces', serif; font-size:26px; font-weight:600; margin-bottom:28px; white-space:nowrap; }
-  .plan-price span{ font-family:'Inter'; font-size:14px; color:var(--cream-dim); font-weight:400; }
-  .plan-features{ list-style:none; display:flex; flex-direction:column; gap:13px; margin-bottom:32px; flex:1; }
-  .plan-features li{ font-size:14px; color:var(--cream-dim); display:flex; gap:10px; align-items:flex-start; }
-  .plan-features li::before{ content:"—"; color:var(--rust-bright); flex-shrink:0; }
-  .plan-cta{
-    text-align:center; padding:13px; border-radius:100px; font-size:14.5px; font-weight:600;
-    border:1px solid var(--line-bright); transition: all .25s;
-  }
-  .plan-cta:hover{ background:var(--cream); color:var(--bg-base); border-color:var(--cream); }
-  .plan-card.featured .plan-cta{ background:var(--rust); border-color:var(--rust); color:#1B130F; }
-  .plan-card.featured .plan-cta:hover{ background:var(--rust-bright); border-color:var(--rust-bright); }
-
-  /* ===== CURATION ===== */
-  .curation-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:18px; }
-  @media (max-width:900px){ .curation-grid{grid-template-columns:repeat(2,1fr);} }
-  .bean-card{
-    background:var(--bg-card); border:1px solid var(--line); border-radius:18px;
-    padding:26px 22px; transition: border-color .3s;
-  }
-  .bean-card:hover{ border-color: var(--line-bright); }
-  .bean-roast{
-    width:36px; height:36px; border-radius:50%; margin-bottom:18px;
-    display:flex; align-items:center; justify-content:center;
-    font-size:11px; font-family:'JetBrains Mono'; font-weight:500;
-  }
-  .bean-name{ font-family:'Fraunces', serif; font-size:18px; font-weight:600; margin-bottom:6px; }
-  .bean-origin{ font-size:13px; color:var(--cream-dim); margin-bottom:14px; }
-  .bean-notes{ display:flex; gap:6px; flex-wrap:wrap; }
-  .bean-notes span{
-    font-size:11.5px; padding:4px 10px; border-radius:100px; background:rgba(237,226,204,0.06);
-    color:var(--cream-dim); border:1px solid var(--line);
-  }
-
-  /* ===== TESTIMONIAL / TRUST ===== */
-  .trust{
-    display:grid; grid-template-columns: 1fr 1fr; gap:64px; align-items:center;
-  }
-  @media (max-width:900px){ .trust{grid-template-columns:1fr;} }
-  .quote{
-    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
-    font-size:clamp(22px,2.6vw,30px); line-height:1.45; color:var(--cream);
-  }
-  .quote-author{ margin-top:24px; font-size:14px; color:var(--cream-dim); }
-  .quote-author b{ color:var(--cream); font-style:normal; font-weight:600; }
-  .trust-stats{ display:grid; grid-template-columns:1fr 1fr; gap:32px; }
-  .trust-stat-num{ font-family:'Fraunces', serif; font-size:40px; font-weight:600; color:var(--rust-bright); }
-  .trust-stat-label{ font-size:13.5px; color:var(--cream-dim); margin-top:6px; line-height:1.5; }
-
-  /* ===== CTA FOOTER ===== */
-  .cta-band{
-    background: linear-gradient(135deg, var(--bg-card), #241A13);
-    border-radius:28px; padding:80px 56px; text-align:center;
-    position:relative; overflow:hidden; border:1px solid var(--line);
-  }
-  .cta-band::after{
-    content:""; position:absolute; width:380px; height:380px; border-radius:50%;
-    background: radial-gradient(circle, rgba(201,122,58,0.18), transparent 70%);
-    top:-150px; right:-100px;
-  }
-  .cta-band h2{ font-family:'Fraunces', serif; font-size:clamp(28px,4vw,44px); font-weight:600; margin-bottom:20px; position:relative;}
-  .cta-band p{ color:var(--cream-dim); font-size:16px; margin-bottom:36px; position:relative;}
-
-  footer{
-    border-top:1px solid var(--line); padding:56px 0 40px;
-    display:flex; justify-content:space-between; align-items:flex-start; gap:40px;
-    font-size:13.5px; color:var(--cream-dim);
-  }
-  @media (max-width:700px){ footer{flex-direction:column; gap:28px;} }
-  .footer-cols{ display:flex; gap:64px; }
-  .footer-col h4{ color:var(--cream); font-size:13px; margin-bottom:14px; font-weight:600; }
-  .footer-col a{ display:block; margin-bottom:9px; color:var(--cream-dim); transition:color .2s; }
-  .footer-col a:hover{ color:var(--rust-bright); }
-
-  .reveal{ opacity:0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-  .reveal.in{ opacity:1; transform:none; }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="logo"><span class="logo-dot"></span>포어링커피</div>
-  <div class="nav-links">
-    <a href="#flow">이용 방법</a>
-    <a href="#plans">구독 플랜</a>
-    <a href="#curation">원두 큐레이션</a>
-    <a href="#trust">후기</a>
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a href="#top" class="logo"><span class="dot"></span>NATUREGUARD</a>
+    <nav class="nav-links">
+      <a href="#brand">브랜드 소개</a>
+      <a href="#products">제품</a>
+      <a href="#safety">성분 &amp; 안전</a>
+      <a href="#shop">구매</a>
+      <a href="#support">고객지원</a>
+    </nav>
+    <div class="nav-right">
+      <a href="#shop" class="nav-cta">온라인 구매</a>
+      <button class="burger" id="burgerBtn" aria-label="메뉴 열기" aria-expanded="false"><span></span></button>
+    </div>
   </div>
-  <a href="#plans" class="nav-cta">구독 시작하기</a>
-</nav>
-
-<header class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <span class="eyebrow">Weekly Pour-Over Subscription</span>
-      <h1 class="hero-title">매주, 당신의<br>취향에 맞춰<br><em>내리는</em> 한 잔</h1>
-      <p class="hero-sub">짧은 취향 설문 하나로 시작하는 원두 구독. 로스팅 날짜, 분쇄도, 배송 주기까지 — 핸드드립 한 잔을 위한 모든 디테일을 당신에 맞춰 조정합니다.</p>
-      <div class="hero-actions">
-        <a href="#plans" class="btn-primary">취향 설문 시작 →</a>
-        <a href="#flow" class="btn-ghost">어떻게 작동하나요</a>
-      </div>
-      <div class="stat-row">
-        <div><span class="stat-num">307<span style="color:var(--rust-bright)">명</span></span><span class="stat-label">이번 달 신규 구독자</span></div>
-        <div><span class="stat-num">64<span style="color:var(--rust-bright)">%</span></span><span class="stat-label">재구매율</span></div>
-        <div><span class="stat-num">12<span style="color:var(--rust-bright)">개</span></span><span class="stat-label">파트너 로스터리</span></div>
-      </div>
-    </div>
-    <div class="drip-visual" aria-hidden="true">
-      <svg viewBox="0 0 300 400" fill="none">
-        <!-- dripper -->
-        <path d="M95 40 L205 40 L172 118 L128 118 Z" fill="none" stroke="#8B5A2B" stroke-width="2.5"/>
-        <ellipse cx="150" cy="40" rx="55" ry="7" fill="none" stroke="#8B5A2B" stroke-width="2.5"/>
-        <!-- filter coffee mound -->
-        <path d="M122 47 Q150 32 178 47 Q164 62 150 62 Q136 62 122 47 Z" fill="#3A2A1C"/>
-        <!-- drops -->
-        <circle class="drop" cx="150" cy="122" r="4" fill="#C97A3A"/>
-        <circle class="drop drop2" cx="150" cy="122" r="4" fill="#C97A3A"/>
-        <!-- cup -->
-        <path d="M100 250 L200 250 L191 320 Q150 331 109 320 Z" fill="none" stroke="#8B5A2B" stroke-width="2.5"/>
-        <ellipse cx="150" cy="250" rx="50" ry="8" fill="#2A1F17" stroke="#8B5A2B" stroke-width="2"/>
-        <ellipse class="ripple" cx="150" cy="250" rx="18" ry="3.5" fill="none" stroke="#E0934E" stroke-width="1.5"/>
-        <ellipse class="ripple ripple2" cx="150" cy="250" rx="18" ry="3.5" fill="none" stroke="#E0934E" stroke-width="1.5"/>
-        <path d="M200 264 Q227 269 222 291 Q217 309 195 305" fill="none" stroke="#8B5A2B" stroke-width="2.5"/>
-        <!-- steam -->
-        <path d="M132 232 Q127 216 137 207 Q147 198 140 184" stroke="#B8A98F" stroke-width="1.5" fill="none" opacity="0.5"/>
-        <path d="M165 232 Q160 218 170 209 Q180 200 172 187" stroke="#B8A98F" stroke-width="1.5" fill="none" opacity="0.4"/>
-      </svg>
-    </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#brand">브랜드 소개</a>
+    <a href="#products">제품</a>
+    <a href="#safety">성분 &amp; 안전</a>
+    <a href="#shop">구매</a>
+    <a href="#support">고객지원</a>
+    <a href="#shop" class="btn btn-primary nav-cta">온라인 구매</a>
   </div>
 </header>
 
-<section id="flow">
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">0세부터 18세까지</span>
+        <h1>햇빛은 막을 수 없지만,<br>피부는 지킬 수 있어요</h1>
+        <p class="hero-sub">
+          네이처가드는 갓 태어난 아이부터 활발하게 뛰어노는 청소년까지, 성장 단계에 맞춰 자외선 차단 성분과 사용감을 다르게 설계합니다.
+          전 성분을 빠짐없이 공개하고, 모든 제품은 안전성 검증을 거칩니다.
+        </p>
+        <div class="hero-ctas">
+          <a href="#products" class="btn btn-primary">제품 둘러보기</a>
+          <a href="#safety" class="btn btn-ghost">전 성분 확인하기</a>
+        </div>
+        <div class="hero-facts">
+          <div><strong>0–18세</strong>전 연령 라인업</div>
+          <div><strong>100%</strong>전 성분 공개</div>
+          <div><strong>무향료 · 무알코올</strong>민감한 피부 고려 설계</div>
+        </div>
+      </div>
+
+      <div class="hero-art">
+        <svg viewBox="0 0 460 460" class="guard-illustration" aria-hidden="true">
+          <circle cx="305" cy="140" r="105" fill="var(--sun-soft)" opacity="0.55"/>
+          <g class="sun-rays">
+            <circle cx="305" cy="140" r="38" fill="var(--sun)"/>
+            <g stroke="var(--sun)" stroke-width="5" stroke-linecap="round">
+              <line x1="305" y1="68" x2="305" y2="84"/>
+              <line x1="305" y1="196" x2="305" y2="212"/>
+              <line x1="233" y1="140" x2="249" y2="140"/>
+              <line x1="361" y1="140" x2="377" y2="140"/>
+              <line x1="254" y1="89" x2="265" y2="100"/>
+              <line x1="345" y1="180" x2="356" y2="191"/>
+              <line x1="356" y1="89" x2="345" y2="100"/>
+              <line x1="265" y1="180" x2="254" y2="191"/>
+            </g>
+          </g>
+          <path d="M 65 382 A 165 165 0 0 1 395 382" fill="none" stroke="var(--sage)" stroke-width="15" stroke-linecap="round" opacity="0.9"/>
+          <path d="M 100 382 A 130 130 0 0 1 360 382" fill="none" stroke="var(--forest)" stroke-width="15" stroke-linecap="round"/>
+          <path d="M 137 382 A 93 93 0 0 1 323 382" fill="none" stroke="var(--sun)" stroke-width="14" stroke-linecap="round"/>
+          <ellipse cx="230" cy="406" rx="178" ry="30" fill="var(--sage-pale)"/>
+          <g fill="var(--sage)" opacity="0.8">
+            <path d="M70 392c10-18 30-22 44-12-6 18-26 24-44 12z"/>
+            <path d="M392 396c-9-17-28-21-41-12 5 17 24 23 41 12z"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND -->
+  <section class="block" id="brand">
+    <div class="wrap">
+      <div class="block-head reveal">
+        <span class="eyebrow">BRAND STORY</span>
+        <h2>브랜드 소개</h2>
+        <p class="block-lead">작은 피부에서 시작된 이야기가, 자라나는 모든 순간을 함께 지킵니다.</p>
+      </div>
+      <div class="card-grid cols-2">
+        <div class="card reveal">
+          <div class="card-icon" id="icon-story"></div>
+          <span class="tag">BRAND STORY</span>
+          <h3>브랜드 스토리</h3>
+          <p>아이의 민감한 피부에 마음 편히 발라줄 자외선 차단제를 찾지 못해, 직접 만들기 시작한 이야기. 네이처가드는 한 부모의 고민에서 출발했습니다.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon" id="icon-philosophy"></div>
+          <span class="tag">PHILOSOPHY</span>
+          <h3>개발 철학</h3>
+          <p>성분 하나, 농도 하나까지 피부과 자문을 거쳐 결정합니다. 효과와 순한 사용감, 두 가지를 동시에 만족시키는 균형을 찾는 일이 저희의 기준입니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="block alt" id="products">
+    <div class="wrap">
+      <div class="block-head reveal">
+        <span class="eyebrow">PRODUCTS</span>
+        <h2>제품</h2>
+        <p class="block-lead">0세부터 18세까지, 성장 단계에 맞춘 세 가지 라인을 만나보세요.</p>
+      </div>
+      <div class="card-grid cols-3">
+        <div class="card reveal">
+          <div class="card-icon" id="icon-baby"></div>
+          <span class="tag">0–7세</span>
+          <h3>영유아 선크림</h3>
+          <p>묻혀도 따갑지 않은 무기자차 포뮬러. 얇고 연약한 피부에 맞춰 자극을 최소화했어요.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon" id="icon-teen"></div>
+          <span class="tag">8–18세</span>
+          <h3>청소년 선크림</h3>
+          <p>땀과 물에도 오래가는 산뜻한 마무리. 활동량 많은 아이도 가볍게 바를 수 있어요.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon" id="icon-compare"></div>
+          <span class="tag">GUIDE</span>
+          <h3>제품 비교</h3>
+          <p>두 라인의 차단 지수, 발림성, 사용감을 한눈에 비교하고 우리 아이에게 맞는 제품을 찾아보세요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAFETY -->
+  <section class="block" id="safety">
+    <div class="wrap">
+      <div class="block-head reveal">
+        <span class="eyebrow">SAFETY</span>
+        <h2>성분 &amp; 안전</h2>
+        <p class="block-lead">숨기는 성분 없이, 검증의 과정까지 전부 보여드립니다.</p>
+      </div>
+      <div class="card-grid cols-3">
+        <div class="card reveal">
+          <div class="card-icon" id="icon-ingredient"></div>
+          <span class="tag">FULL DISCLOSURE</span>
+          <h3>전성분 공개</h3>
+          <p>제품에 들어간 모든 성분과 함량 비율을 누락 없이 공개합니다.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon" id="icon-cert"></div>
+          <span class="tag">CERTIFICATION</span>
+          <h3>안전 인증</h3>
+          <p>출시 전 거치는 안전성 평가와 인증 절차를 투명하게 안내합니다.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon" id="icon-doctor"></div>
+          <span class="tag">EXPERT REVIEW</span>
+          <h3>전문의 추천</h3>
+          <p>피부과 전문의 자문을 거쳐 설계 기준과 사용 가이드를 제공합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOP -->
+  <section class="block alt" id="shop">
+    <div class="wrap">
+      <div class="block-head reveal">
+        <span class="eyebrow">SHOP</span>
+        <h2>구매</h2>
+        <p class="block-lead">온라인 스토어부터 기관 전용몰까지, 필요한 곳에서 만나보세요.</p>
+      </div>
+      <div class="card-grid cols-3">
+        <div class="card reveal">
+          <div class="card-icon" id="icon-online"></div>
+          <span class="tag">ONLINE</span>
+          <h3>온라인 구매</h3>
+          <p>공식 스토어에서 필요한 제품을 바로 둘러보고 구매할 수 있어요.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon" id="icon-org"></div>
+          <span class="tag">B2B</span>
+          <h3>기관 전용몰</h3>
+          <p>어린이집, 유치원, 학교 단위의 단체 구매를 별도로 지원합니다.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon" id="icon-promo"></div>
+          <span class="tag">EVENTS</span>
+          <h3>프로모션 &amp; 이벤트</h3>
+          <p>시즌별 혜택과 정기구독 알림을 누구보다 먼저 받아보세요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPPORT -->
+  <section class="block" id="support">
+    <div class="wrap">
+      <div class="block-head reveal">
+        <span class="eyebrow">SUPPORT</span>
+        <h2>고객 지원</h2>
+        <p class="block-lead">궁금한 점은 무엇이든 편하게 물어보세요.</p>
+      </div>
+      <div class="card-grid cols-2">
+        <div class="card reveal">
+          <div class="card-icon" id="icon-faq"></div>
+          <span class="tag">FAQ</span>
+          <h3>FAQ &amp; 후기</h3>
+          <p>자주 묻는 질문과 실제 사용 후기를 한곳에 모아두었습니다.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon" id="icon-contact"></div>
+          <span class="tag">1:1</span>
+          <h3>1:1 문의</h3>
+          <p>제품과 피부 고민, 어떤 것이든 1:1로 꼼꼼히 답변해드려요.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
   <div class="wrap">
-    <div class="section-head reveal">
-      <span class="section-eyebrow">How it works</span>
-      <h2 class="section-title">세 단계면, 첫 배송이 시작됩니다</h2>
-      <p class="section-desc">복잡한 가입 절차 없이, 취향을 묻고 원두를 고르고 주기를 정하면 끝입니다.</p>
-    </div>
-    <div class="flow reveal">
-      <div class="flow-step">
-        <span class="flow-index">01 · 취향 설문</span>
-        <h3>3분, 7가지 질문</h3>
-        <p>산미와 바디감, 평소 즐기는 추출 방식, 하루 섭취량을 묻습니다. 정답은 없습니다 — 당신의 입맛이 기준입니다.</p>
-        <div class="flow-arrow">→</div>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="logo"><span class="dot"></span>NATUREGUARD</a>
+        <p class="footer-tagline">자라는 모든 순간을 지키는, 자연의 방패.<br>0세부터 18세까지 함께합니다.</p>
       </div>
-      <div class="flow-step">
-        <span class="flow-index">02 · 원두 큐레이션</span>
-        <h3>설문 기반 추천</h3>
-        <p>응답을 바탕으로 원두 산지와 로스팅 포인트를 매칭하고, 분쇄도까지 직접 조정할 수 있습니다.</p>
-        <div class="flow-arrow">→</div>
+      <div class="footer-col">
+        <h4>SITEMAP</h4>
+        <a href="#brand">브랜드 소개</a>
+        <a href="#products">제품</a>
+        <a href="#safety">성분 &amp; 안전</a>
+        <a href="#shop">구매</a>
+        <a href="#support">고객지원</a>
       </div>
-      <div class="flow-step">
-        <span class="flow-index">03 · 구독 플랜 설정</span>
-        <h3>주기·결제 한 번에</h3>
-        <p>2주 또는 한 달 배송 주기를 고르고 결제 수단을 등록하면, 그 이후로는 신경 쓸 일이 없습니다.</p>
+      <div class="footer-col">
+        <h4>CUSTOMER CENTER</h4>
+        <p>1588-0000 (평일 09:00–18:00)</p>
+        <p>info@natureguard.kr</p>
+        <a href="#support">1:1 문의하기</a>
       </div>
     </div>
-  </div>
-</section>
-
-<section id="plans">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="section-eyebrow">Subscription Plans</span>
-      <h2 class="section-title">필요한 만큼, 필요한 만큼만</h2>
-      <p class="section-desc">언제든 일시정지하거나 해지할 수 있습니다. 약정은 없습니다.</p>
-    </div>
-    <div class="plans reveal">
-      <div class="plan-card">
-        <p class="plan-name">가볍게 시작하기</p>
-        <p class="plan-weight">200g</p>
-        <p class="plan-cycle">2주마다 배송</p>
-        <p class="plan-price">14,900원 <span>/ 회</span></p>
-        <ul class="plan-features">
-          <li>원두 1종 선택</li>
-          <li>분쇄도 자유 설정</li>
-          <li>로스팅 후 72시간 내 발송</li>
-        </ul>
-        <a href="#" class="plan-cta">이 플랜으로 시작</a>
-      </div>
-      <div class="plan-card featured">
-        <span class="plan-badge">가장 많이 선택</span>
-        <p class="plan-name">매일 한 잔</p>
-        <p class="plan-weight">400g</p>
-        <p class="plan-cycle">한 달마다 배송</p>
-        <p class="plan-price">26,900원 <span>/ 회</span></p>
-        <ul class="plan-features">
-          <li>원두 최대 2종 혼합 선택</li>
-          <li>분쇄도 자유 설정</li>
-          <li>로스팅 후 48시간 내 발송</li>
-          <li>다음 배송 원두 미리보기</li>
-        </ul>
-        <a href="#" class="plan-cta">이 플랜으로 시작</a>
-      </div>
-      <div class="plan-card">
-        <p class="plan-name">시즌 한정</p>
-        <p class="plan-weight">300g</p>
-        <p class="plan-cycle">분기 1회 한정 배송</p>
-        <p class="plan-price">32,900원 <span>/ 회</span></p>
-        <ul class="plan-features">
-          <li>계절 한정 산지 원두</li>
-          <li>로스터 노트 카드 동봉</li>
-          <li>재고 소진 시 다음 시즌 자동 대기</li>
-        </ul>
-        <a href="#" class="plan-cta">이 플랜으로 시작</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="curation">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="section-eyebrow">Bean Curation</span>
-      <h2 class="section-title">이번 주 추천 원두</h2>
-      <p class="section-desc">취향 설문 응답이 가장 많이 매칭된 네 가지 원두입니다.</p>
-    </div>
-    <div class="curation-grid reveal">
-      <div class="bean-card">
-        <div class="bean-roast" style="background:rgba(111,125,92,0.18); color:#9DAE89;">L</div>
-        <p class="bean-name">에티오피아 예가체프</p>
-        <p class="bean-origin">라이트 로스팅 · 워시드</p>
-        <div class="bean-notes"><span>자몽</span><span>꽃향</span><span>밝은 산미</span></div>
-      </div>
-      <div class="bean-card">
-        <div class="bean-roast" style="background:rgba(201,122,58,0.18); color:var(--rust-bright);">M</div>
-        <p class="bean-name">콜롬비아 후일라</p>
-        <p class="bean-origin">미디엄 로스팅 · 내추럴</p>
-        <div class="bean-notes"><span>체리</span><span>캐러멜</span><span>균형감</span></div>
-      </div>
-      <div class="bean-card">
-        <div class="bean-roast" style="background:rgba(139,90,43,0.25); color:var(--wood);">MD</div>
-        <p class="bean-name">과테말라 안티구아</p>
-        <p class="bean-origin">미디엄다크 · 워시드</p>
-        <div class="bean-notes"><span>다크초콜릿</span><span>고소함</span><span>묵직함</span></div>
-      </div>
-      <div class="bean-card">
-        <div class="bean-roast" style="background:rgba(60,42,28,0.6); color:#D8C4A8;">D</div>
-        <p class="bean-name">수마트라 만델링</p>
-        <p class="bean-origin">다크 로스팅 · 세미워시드</p>
-        <div class="bean-notes"><span>흙내</span><span>스모키</span><span>진한 바디</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="trust">
-  <div class="wrap trust reveal">
-    <div>
-      <p class="quote">"매주 다른 원두가 오는 게 아니라, 내 취향이 점점 더 정확해지는 느낌이에요. 분쇄도까지 맞춰주는 구독은 처음입니다."</p>
-      <p class="quote-author"><b>이서윤</b> · 6개월째 구독 중</p>
-    </div>
-    <div class="trust-stats">
-      <div><div class="trust-stat-num">91%</div><div class="trust-stat-label">3개월 차 재구독<br>목표 달성률</div></div>
-      <div><div class="trust-stat-num">4.8</div><div class="trust-stat-label">평균 원두 만족도<br>(5점 만점)</div></div>
-      <div><div class="trust-stat-num">48hr</div><div class="trust-stat-label">로스팅 후<br>평균 발송 시간</div></div>
-      <div><div class="trust-stat-num">5</div><div class="trust-stat-label">엄선한<br>파트너 로스터리</div></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="cta-band reveal">
-      <h2>다음 잔은,<br>당신의 취향대로</h2>
-      <p>3분짜리 설문으로 시작해서, 첫 배송까지 보통 5일이면 충분합니다.</p>
-      <a href="#plans" class="btn-primary">취향 설문 시작하기 →</a>
-    </div>
-  </div>
-</section>
-
-<footer class="wrap">
-  <div class="logo"><span class="logo-dot"></span>포어링커피</div>
-  <div class="footer-cols">
-    <div class="footer-col">
-      <h4>서비스</h4>
-      <a href="#flow">이용 방법</a>
-      <a href="#plans">구독 플랜</a>
-      <a href="#curation">원두 큐레이션</a>
-    </div>
-    <div class="footer-col">
-      <h4>고객지원</h4>
-      <a href="#">FAQ</a>
-      <a href="#">1:1 문의</a>
-      <a href="#">배송 조회</a>
-    </div>
-    <div class="footer-col">
-      <h4>회사</h4>
-      <a href="#">소개</a>
-      <a href="#">파트너 로스터리</a>
+    <div class="footer-bottom">
+      <span>© 2026 NATUREGUARD. 본 페이지는 기획 제안용 디자인 시안입니다.</span>
+      <span>Seoul, Korea</span>
     </div>
   </div>
 </footer>
 
 <script>
-  const els = document.querySelectorAll('.reveal');
+  // header shadow on scroll
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 8);
+  }, {passive:true});
+
+  // mobile nav
+  const burger = document.getElementById('burgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  burger.addEventListener('click', () => {
+    const open = mobileNav.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileNav.classList.remove('open');
+    burger.classList.remove('open');
+  }));
+
+  // scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-  }, { threshold: 0.12 });
-  els.forEach(el => io.observe(el));
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.15});
+  reveals.forEach(el => io.observe(el));
+
+  // icon library — consistent line-style SVGs, single stroke, rounded caps
+  const ICONS = {
+    'icon-story': `<path d="M12 6c-2-1.5-5-2-8-1v13c3-1 6-.5 8 1 2-1.5 5-2 8-1V5c-3-1-6-.5-8 1z"/><path d="M12 6v13"/>`,
+    'icon-philosophy': `<path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.4.3.6.8.6 1.2v.5h6v-.5c0-.4.2-.9.6-1.2A6 6 0 0 0 12 3z"/>`,
+    'icon-baby': `<path d="M12 21c-4-2.5-7-6-7-10a7 7 0 0 1 14 0c0 4-3 7.5-7 10z"/><path d="M12 8.5c1.4 0 2.5 1 2.5 2.3 0 1.6-2.5 3.2-2.5 3.2s-2.5-1.6-2.5-3.2c0-1.3 1.1-2.3 2.5-2.3z"/>`,
+    'icon-teen': `<circle cx="12" cy="9" r="4"/><path d="M12 17v4"/><path d="M5 9H3"/><path d="M21 9h-2"/><path d="M7.5 4.5 6 3"/><path d="M16.5 4.5 18 3"/><path d="M8.5 20.5 16 20.5"/>`,
+    'icon-compare': `<circle cx="9" cy="12" r="6.5"/><circle cx="16" cy="12" r="6.5"/>`,
+    'icon-ingredient': `<rect x="5" y="3" width="10" height="14" rx="1.4"/><line x1="7.5" y1="7" x2="12.5" y2="7"/><line x1="7.5" y1="10" x2="12.5" y2="10"/><line x1="7.5" y1="13" x2="11" y2="13"/><circle cx="16.5" cy="16.5" r="3.2"/><line x1="19" y1="19" x2="21.2" y2="21.2"/>`,
+    'icon-cert': `<path d="M12 3.5 19 6v6c0 4.5-3 7.5-7 8.5-4-1-7-4-7-8.5V6z"/><path d="m9 12 2.2 2.2L15.5 9.8"/>`,
+    'icon-doctor': `<path d="M7 4v6a5 5 0 0 0 10 0V4"/><line x1="7" y1="4" x2="7" y2="2.6"/><line x1="17" y1="4" x2="17" y2="2.6"/><circle cx="19.5" cy="14.5" r="2"/><path d="M12 14v3a4 4 0 0 0 4 4"/>`,
+    'icon-online': `<path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>`,
+    'icon-org': `<path d="M4 21V8l8-5 8 5v13"/><path d="M4 21h16"/><line x1="9" y1="21" x2="9" y2="13"/><line x1="15" y1="21" x2="15" y2="13"/><line x1="12" y1="21" x2="12" y2="16"/>`,
+    'icon-promo': `<rect x="4" y="9" width="16" height="11" rx="1.2"/><line x1="4" y1="13" x2="20" y2="13"/><line x1="12" y1="9" x2="12" y2="20"/><path d="M12 9c-1.6 0-3-1-3-2.5S10 4 12 5.5 14 9 12 9z"/><path d="M12 9c1.6 0 3-1 3-2.5S14 4 12 5.5 10 9 12 9z"/>`,
+    'icon-faq': `<path d="M4 5h16v10H9l-4 4z"/><path d="M9.5 9.2c0-1 .8-1.7 2-1.7s2 .6 2 1.6c0 .9-1.2 1.2-1.6 2"/><circle cx="11.9" cy="13.4" r="0.4" fill="currentColor"/>`,
+    'icon-contact': `<rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/><path d="m4 6.5 8 6.5 8-6.5"/>`
+  };
+  Object.entries(ICONS).forEach(([id, inner]) => {
+    const slot = document.getElementById(id);
+    if(!slot) return;
+    slot.innerHTML = `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--forest)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+  });
 </script>
 
 </body>
